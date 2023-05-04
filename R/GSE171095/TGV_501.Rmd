@@ -1,5 +1,5 @@
 ---
-title: "scRNAseq IN Neuron Analysis"
+title: "scRNAseq IN Neuron Analysis - GSE171095 - TGV_501"
 author:
   - name: "Emir Turkes"
 date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
@@ -16,8 +16,10 @@ output:
       collapsed: false
       smooth_scroll: false
 knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_file = file.path("..", "results", "analysis.html"))
-  })
+  rmarkdown::render(
+    inputFile, encoding = encoding,
+    output_file = file.path("..", "..", "results", unlist(strsplit(getwd(), "/"))[6], "TGV_501.html")
+  )})
 ---
 
 <style type="text/css">
@@ -67,14 +69,17 @@ invisible(suppressPackageStartupMessages(lapply(packages, FUN = library, charact
 knitr::opts_chunk$set(fig.width = 10, fig.height = 7, dpi = 300)
 # -----------------------
 
-# Commonly used paths.
-# --------------------
-data_dir <- file.path("..", "data")
-cache_dir <- file.path("..", "cache") # Store intermediate data objects here.
+# Useful variables.
+# -----------------
+data_name <- unlist(strsplit(getwd(), "/"))[6] # Name of dataset derived from path.
+sample_name <- "TGV_501"
+
+data_dir <- file.path("..", "..", "data", data_name)
+cache_dir <- file.path("..", "..", "cache", data_name, sample_name) # Store intermediate data objects here.
 if (!dir.exists(cache_dir)) {
   dir.create(cache_dir, recursive = TRUE)
 }
-# --------------------
+# -----------------
 ```
 
 # References
