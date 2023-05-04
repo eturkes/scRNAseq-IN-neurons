@@ -22,6 +22,7 @@ LABEL org.opencontainers.image.authors="Emir Turkes emir.turkes@eturkes.com"
 
 RUN Rscript -e "install.packages('rmarkdown')" \
         -e "install.packages('markdown')" \
+        -e "install.packages('conflicted')" \
     && rm -Rf /var/lib/apt/lists/ \
         /tmp/downloaded_packages/ \
         /tmp/*.rds

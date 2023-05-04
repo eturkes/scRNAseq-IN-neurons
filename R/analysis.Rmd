@@ -37,10 +37,6 @@ The table of contents in the top left is clickable and can be used to quickly na
 To toggle the visibility of code, use the `CODE` toggles at the top right of chunks.
 The toggle at the start of the document controls the visibility of all chunks.
 
-# Prep
-
-This section covers necessary but non-directly relevant code for generating the main sections.
-
 ```{r}
 #    This file is part of scRNAseq-IN-neurons.
 #    Copyright (C) 2023  Emir Turkes, UK DRI UCL
@@ -59,6 +55,26 @@ This section covers necessary but non-directly relevant code for generating the 
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #    Emir Turkes can be contacted at emir.turkes@eturkes.com
+
+# Load required packages, suppressing startup messages.
+# -----------------------------------------------------
+packages <- "conflicted"
+invisible(suppressPackageStartupMessages(lapply(packages, FUN = library, character.only = TRUE)))
+# -----------------------------------------------------
+
+# Define global settings.
+# -----------------------
+knitr::opts_chunk$set(fig.width = 10, fig.height = 7, dpi = 300)
+# -----------------------
+
+# Commonly used paths.
+# --------------------
+data_dir <- file.path("..", "data")
+cache_dir <- file.path("..", "cache") # Store intermediate data objects here.
+if (!dir.exists(cache_dir)) {
+  dir.create(cache_dir, recursive = TRUE)
+}
+# --------------------
 ```
 
 # References
