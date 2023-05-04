@@ -20,9 +20,21 @@ FROM rocker/rstudio:4.3.0
 
 LABEL org.opencontainers.image.authors="Emir Turkes emir.turkes@eturkes.com"
 
-RUN Rscript -e "install.packages('rmarkdown')" \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        zlib1g-dev \
+        libglpk-dev \
+    && Rscript -e "install.packages('rmarkdown')" \
         -e "install.packages('markdown')" \
         -e "install.packages('conflicted')" \
+        -e "install.packages('DT')" \
+        -e "install.packages('Seurat')" \
+        -e "install.packages('viridis')" \
+        -e "install.packages('BiocManager')" \
+        -e "BiocManager::install('SingleCellExperiment')" \
+        -e "BiocManager::install('scuttle')" \
+        -e "BiocManager::install('glmGamPoi')" \
+    && apt-get clean \
     && rm -Rf /var/lib/apt/lists/ \
         /tmp/downloaded_packages/ \
         /tmp/*.rds

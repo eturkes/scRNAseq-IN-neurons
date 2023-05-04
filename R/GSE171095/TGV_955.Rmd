@@ -1,5 +1,5 @@
 ---
-title: "scRNAseq IN Neuron Analysis - GSE171095 - TGV_501"
+title: "scRNAseq IN Neuron Analysis - GSE171095 - TGV_955"
 author:
   - name: "Emir Turkes"
 date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
@@ -18,7 +18,7 @@ output:
 knit: (function(inputFile, encoding) {
   rmarkdown::render(
     inputFile, encoding = encoding,
-    output_file = file.path("..", "..", "results", unlist(strsplit(getwd(), "/"))[6], "TGV_501.html")
+    output_file = file.path("..", "..", "results", unlist(strsplit(getwd(), "/"))[6], "TGV_955.html")
   )})
 ---
 
@@ -80,7 +80,7 @@ knitr::opts_chunk$set(fig.width = 10, fig.height = 7, dpi = 300)
 # Useful variables.
 # -----------------
 data_name <- unlist(strsplit(getwd(), "/"))[6] # Name of dataset derived from path.
-sample_name <- "TGV_501"
+sample_name <- "TGV_955"
 
 data_dir <- file.path("..", "..", "data", data_name)
 cache_dir <- file.path("..", "..", "cache", data_name, sample_name) # Store intermediate data objects here.
@@ -105,7 +105,7 @@ names(metadata_to_plot) <- "seurat_clusters"
 We first read in the data and form a SingleCellExperiment object.
 
 ```{r}
-data <- read.csv(file.path(data_dir, paste0("GSM6093732_", sample_name, "dr", ".csv"))) # dr = doublets removed.
+data <- read.csv(file.path(data_dir, paste0("GSM6093735_", sample_name, "dr", ".csv"))) # dr = doublets removed.
 
 # Move genes from first column to rownames.
 # -----------------------------------------
@@ -223,7 +223,7 @@ rm(sce)
 seurat <- RenameAssays(seurat, originalexp = "RNA")
 seurat <- cluster_pipeline(
   seurat, cache_dir = cache_dir, sub_name = sub_name, protocol = protocol,
-  vars_to_regress = vars_to_regress, parallel_override = parallel_override, cc = FALSE, res_divider = 20000
+  vars_to_regress = vars_to_regress, parallel_override = parallel_override, cc = FALSE, res_divider = 30000
 )
 seurat
 
