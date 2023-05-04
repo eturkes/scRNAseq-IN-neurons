@@ -10,3 +10,4 @@ docker-compose.yml
 README.md
 nohup.out
 cache
+scRNAseq-IN-neurons.Rproj
