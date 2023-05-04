@@ -1,0 +1,12 @@
+data
+.git
+R
+results
+storage
+COPYING
+docker-compose.yml
+.env
+.gitignore
+README.md
+nohup.out
+cache
