@@ -67,15 +67,17 @@ packages <- c(
 invisible(suppressPackageStartupMessages(lapply(packages, FUN = library, character.only = TRUE)))
 # -----------------------------------------------------
 
+# Define global settings.
+# -----------------------
+conflicts_prefer(matrixStats::rowMedians, .quiet = TRUE)
+
+knitr::opts_chunk$set(fig.width = 10, fig.height = 7, dpi = 300)
+# -----------------------
+
 # Define functions.
 # -----------------
 source(file.path("..", "utils.R"))
 # -----------------
-
-# Define global settings.
-# -----------------------
-knitr::opts_chunk$set(fig.width = 10, fig.height = 7, dpi = 300)
-# -----------------------
 
 # Useful variables.
 # -----------------
