@@ -172,7 +172,7 @@ ggplot(proportion, aes(fill = Cells, y = Number, x = Sample)) +
   theme_light()
 ggplot(proportion, aes(fill = Cells, y = Number, x = Sample)) + 
   geom_bar(position = "fill", stat = "identity") +
-  ylab("Percentage") +
+  ylab("Proportion") +
   theme_light()
 ```
 
