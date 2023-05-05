@@ -145,7 +145,7 @@ for (i in seq_along(file_list)) {
 
 ## IN Proportion Plots/Tables
 
-Plots showing the percentage of IN neurons in each sample.
+Results showing the percentage of IN neurons in each sample.
 
 ```{r}
 # Make a table summarising the proportion of IN neurons per sample.
