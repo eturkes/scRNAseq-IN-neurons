@@ -18,8 +18,9 @@ output:
 knit: (function(inputFile, encoding) {
   rmarkdown::render(
     inputFile, encoding = encoding,
-    output_file = file.path("..", "..", "results", unlist(strsplit(getwd(), "/"))[6], "IN_proportion.html")
-  )})
+    output_file = file.path(
+      "..", "..", "results", unlist(strsplit(getwd(), "/"))[6], "IN_proportion_GSE171095.html"
+  ))})
 ---
 
 <style type="text/css">
