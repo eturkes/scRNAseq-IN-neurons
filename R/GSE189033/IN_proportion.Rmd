@@ -11,7 +11,7 @@ output:
     theme: lumen
     highlight: haddock
     toc: true
-    toc_depth: 2
+    toc_depth: 3
     toc_float:
       collapsed: false
       smooth_scroll: false
@@ -176,6 +176,175 @@ ggplot(proportion, aes(fill = Cells, y = Number, x = Sample)) +
   geom_bar(position = "stack", stat = "identity") +
   theme_light()
 ggplot(proportion, aes(fill = Cells, y = Number, x = Sample)) +
+  geom_bar(position = "fill", stat = "identity") +
+  ylab("Proportion") +
+  theme_light()
+```
+
+# Pvalb IN Proportion Analysis
+
+Next we look at Pvalb IN neurons as a proportion of other IN neurons and all cells.
+
+## D-2
+
+### UMAP Expression Plots with Pvalb Neurons Only
+
+Plotting the expression of various IN neuron markers.
+
+```{r}
+# Subset to IN neurons.
+# ---------------------
+pvalb <- vector("list", length = 1)
+pvalb[[1]] <- subset(files[[2]], idents = c("3", "12"))
+# ---------------------
+
+for (i in seq_along(pvalb)) {
+  print(
+    FeaturePlot(
+      pvalb[[i]], features = c("Gad1", "Gad2", "Pvalb", "Sst"), order = TRUE, cols = c("lightgrey", "red")
+    ) + plot_annotation("D-2", theme = theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold")))
+  )
+}
+```
+
+### IN Proportion Plots/Tables
+
+Results showing the percentage of IN neurons in each sample.
+
+```{r}
+# Make a table summarising the proportion of IN neurons per sample.
+# -----------------------------------------------------------------
+proportion <- data.frame(
+  "Other_Cells" = c(ncol(files[[1]]), ncol(sub_files[[1]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
+)
+proportion$IN_Percentage <- round((proportion$Pvalb_Cells / proportion$Other_Cells) * 100)
+rownames(proportion) <- c("Out_of_All_Cells", "Out_of_IN_Cells")
+datatable_download(proportion)
+# -----------------------------------------------------------------
+
+# Transform the table into a ggplot compatible format.
+# ----------------------------------------------------
+proportion <- proportion[ , -3]
+proportion$Comparison <- rownames(proportion)
+proportion <- proportion %>% pivot_longer(
+  cols = c("Other_Cells", "Pvalb_Cells"), names_to = "Cells", values_to = "Number"
+)
+# ----------------------------------------------------
+
+ggplot(proportion, aes(fill = Cells, y = Number, x = Comparison)) +
+  geom_bar(position = "stack", stat = "identity") +
+  theme_light()
+ggplot(proportion, aes(fill = Cells, y = Number, x = Comparison)) +
+  geom_bar(position = "fill", stat = "identity") +
+  ylab("Proportion") +
+  theme_light()
+```
+
+## D-3
+
+### UMAP Expression Plots with Pvalb Neurons Only
+
+Plotting the expression of various IN neuron markers.
+
+```{r}
+# Subset to IN neurons.
+# ---------------------
+pvalb <- vector("list", length = 1)
+pvalb[[1]] <- subset(files[[3]], idents = "3")
+# ---------------------
+
+for (i in seq_along(pvalb)) {
+  print(
+    FeaturePlot(
+      pvalb[[i]], features = c("Gad1", "Gad2", "Pvalb", "Sst"), order = TRUE, cols = c("lightgrey", "red")
+    ) + plot_annotation("D-3", theme = theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold")))
+  )
+}
+```
+
+### IN Proportion Plots/Tables
+
+Results showing the percentage of IN neurons in each sample.
+
+```{r}
+# Make a table summarising the proportion of IN neurons per sample.
+# -----------------------------------------------------------------
+proportion <- data.frame(
+  "Other_Cells" = c(ncol(files[[1]]), ncol(sub_files[[1]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
+)
+proportion$IN_Percentage <- round((proportion$Pvalb_Cells / proportion$Other_Cells) * 100)
+rownames(proportion) <- c("Out_of_All_Cells", "Out_of_IN_Cells")
+datatable_download(proportion)
+# -----------------------------------------------------------------
+
+# Transform the table into a ggplot compatible format.
+# ----------------------------------------------------
+proportion <- proportion[ , -3]
+proportion$Comparison <- rownames(proportion)
+proportion <- proportion %>% pivot_longer(
+  cols = c("Other_Cells", "Pvalb_Cells"), names_to = "Cells", values_to = "Number"
+)
+# ----------------------------------------------------
+
+ggplot(proportion, aes(fill = Cells, y = Number, x = Comparison)) +
+  geom_bar(position = "stack", stat = "identity") +
+  theme_light()
+ggplot(proportion, aes(fill = Cells, y = Number, x = Comparison)) +
+  geom_bar(position = "fill", stat = "identity") +
+  ylab("Proportion") +
+  theme_light()
+```
+
+## D-6
+
+### UMAP Expression Plots with Pvalb Neurons Only
+
+Plotting the expression of various IN neuron markers.
+
+```{r}
+# Subset to IN neurons.
+# ---------------------
+pvalb <- vector("list", length = 1)
+pvalb[[1]] <- subset(files[[6]], idents = c("10", "2"))
+# ---------------------
+
+for (i in seq_along(pvalb)) {
+  print(
+    FeaturePlot(
+      pvalb[[i]], features = c("Gad1", "Gad2", "Pvalb", "Sst"), order = TRUE, cols = c("lightgrey", "red")
+    ) + plot_annotation("D-6", theme = theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold")))
+  )
+}
+```
+
+### IN Proportion Plots/Tables
+
+Results showing the percentage of IN neurons in each sample.
+
+```{r}
+# Make a table summarising the proportion of IN neurons per sample.
+# -----------------------------------------------------------------
+proportion <- data.frame(
+  "Other_Cells" = c(ncol(files[[1]]), ncol(sub_files[[1]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
+)
+proportion$IN_Percentage <- round((proportion$Pvalb_Cells / proportion$Other_Cells) * 100)
+rownames(proportion) <- c("Out_of_All_Cells", "Out_of_IN_Cells")
+datatable_download(proportion)
+# -----------------------------------------------------------------
+
+# Transform the table into a ggplot compatible format.
+# ----------------------------------------------------
+proportion <- proportion[ , -3]
+proportion$Comparison <- rownames(proportion)
+proportion <- proportion %>% pivot_longer(
+  cols = c("Other_Cells", "Pvalb_Cells"), names_to = "Cells", values_to = "Number"
+)
+# ----------------------------------------------------
+
+ggplot(proportion, aes(fill = Cells, y = Number, x = Comparison)) +
+  geom_bar(position = "stack", stat = "identity") +
+  theme_light()
+ggplot(proportion, aes(fill = Cells, y = Number, x = Comparison)) +
   geom_bar(position = "fill", stat = "identity") +
   ylab("Proportion") +
   theme_light()
