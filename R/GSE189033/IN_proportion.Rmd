@@ -1,0 +1,190 @@
+---
+title: "scRNAseq IN Neuron Analysis - GSE189033 - IN Proportion"
+author:
+  - name: "Emir Turkes"
+date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+link-citations: true
+output:
+  html_document:
+    code_folding: hide
+    number_sections: true
+    theme: lumen
+    highlight: haddock
+    toc: true
+    toc_depth: 2
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(
+    inputFile, encoding = encoding,
+    output_file = file.path(
+      "..", "..", "results", unlist(strsplit(getwd(), "/"))[6], "IN_proportion_GSE189033.html"
+  ))})
+---
+
+<style type="text/css">
+body {font-size: 16px;}
+h1.title {font-size: 35px;}
+h1 {font-size: 24px;}
+h2 {font-size: 22px;}
+.toc-content {padding-left: 0px; padding-right: 0px;}
+div.tocify {width: 100%;}
+.tocify-subheader .tocify-item {font-size: 0.95em; padding-left: 25px; text-indent: 0;}
+div.main-container {max-width: none; width: 100%;}
+</style>
+
+*This file is a part of [scRNAseq-IN-neurons](https://github.com/eturkes/scRNAseq-IN-neurons).*
+
+The table of contents in the top left is clickable and can be used to quickly navigate the document.
+To toggle the visibility of code, use the `CODE` toggles at the top right of chunks.
+The toggle at the start of the document controls the visibility of all chunks.
+
+```{r}
+#    This file is part of scRNAseq-IN-neurons.
+#    Copyright (C) 2023  Emir Turkes, UK DRI UCL
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    Emir Turkes can be contacted at emir.turkes@eturkes.com
+
+# Load required packages, suppressing startup messages.
+# -----------------------------------------------------
+packages <- c("conflicted", "Seurat", "patchwork", "DT", "tidyr", "ggplot2")
+invisible(suppressPackageStartupMessages(lapply(packages, FUN = library, character.only = TRUE)))
+# -----------------------------------------------------
+
+# Define global settings.
+# -----------------------
+knitr::opts_chunk$set(fig.width = 10, fig.height = 7, dpi = 300)
+# -----------------------
+
+# Define functions.
+# -----------------
+source(file.path("..", "utils.R"))
+# -----------------
+
+# Useful variables.
+# -----------------
+data_name <- unlist(strsplit(getwd(), "/"))[6] # Name of dataset derived from path.
+
+data_dir <- file.path("..", "..", "data", data_name)
+cache_dir <- file.path("..", "..", "cache", data_name, "IN_proportion") # Store intermediate data objects here.
+if (!dir.exists(cache_dir)) {
+  dir.create(cache_dir, recursive = TRUE)
+}
+# -------------------------------------------------------------------------
+```
+
+# IN Proportion Analysis
+
+We look at the proportion of inhibitory neurons in each sample of the dataset below.
+Samples were previously processed in separate R Markdown files.
+
+## UMAP Expression Plots with All Cells
+
+Plotting the expression of various IN neuron markers.
+
+```{r}
+# Read in files.
+# --------------
+file_list <- list.files(file.path(cache_dir, ".."), recursive = TRUE) # Processed Seurats stored in cache.
+files <- vector("list", length = length(file_list))
+for (i in seq_along(files)) {
+  files[[i]] <- readRDS(file.path(cache_dir, "..", file_list[i]))
+}
+# --------------
+
+for (i in seq_along(file_list)) {
+  print(
+    FeaturePlot(
+      files[[i]], features = c("Gad1", "Gad2", "Pvalb", "Sst"), order = TRUE, cols = c("lightgrey", "red")
+    ) + plot_annotation( # Title plots with sample name.
+      unlist(strsplit(file_list[i], split = "/"))[1],
+      theme = theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold"))
+    )
+  )
+}
+```
+
+## UMAP Expression Plots with IN Neurons Only
+
+Plotting the expression of various IN neuron markers.
+
+```{r}
+# Subset to IN neurons.
+# ---------------------
+sub_files <- vector("list", length = length(file_list))
+sub_files[[1]] <- subset(files[[1]], idents = c("6", "5", "7"))
+sub_files[[2]] <- subset(files[[2]], idents = c("3", "12", "15", "16"))
+sub_files[[3]] <- subset(files[[3]], idents = c("10", "12", "4", "6", "7", "3"))
+sub_files[[4]] <- subset(files[[4]], idents = c("3", "2", "6", "5"))
+sub_files[[5]] <- subset(files[[5]], idents = c("1", "3", "9", "6"))
+sub_files[[6]] <- subset(files[[6]], idents = c("9", "13", "10", "2", "12", "15"))
+sub_files[[7]] <- subset(files[[7]], idents = c("3", "1"))
+sub_files[[8]] <- subset(files[[8]], idents = c("5", "0", "8", "9", "1"))
+# ---------------------
+
+for (i in seq_along(file_list)) {
+  print(
+    FeaturePlot(
+      sub_files[[i]], features = c("Gad1", "Gad2", "Pvalb", "Sst"), order = TRUE, cols = c("lightgrey", "red")
+    ) + plot_annotation( # Title plots with sample name.
+      unlist(strsplit(file_list[i], split = "/"))[1],
+      theme = theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold"))
+    )
+  )
+}
+```
+
+## IN Proportion Plots/Tables
+
+Results showing the percentage of IN neurons in each sample.
+
+```{r}
+# Make a table summarising the proportion of IN neurons per sample.
+# -----------------------------------------------------------------
+proportion <- data.frame(
+  "Total_Cells" = unlist(lapply(files, FUN = ncol)), "IN_Cells" = unlist(lapply(sub_files, FUN = ncol))
+)
+proportion$IN_Percentage <- round((proportion$IN_Cells / proportion$Total_Cells) * 100)
+rownames(proportion) <- unlist(strsplit(file_list, split = "/"))[c(1, 3, 5, 7, 9, 11, 13, 15)]
+datatable_download(proportion)
+# -----------------------------------------------------------------
+
+# Transform the table into a ggplot compatible format.
+# ----------------------------------------------------
+proportion <- proportion[ , -3]
+proportion$Sample <- rownames(proportion)
+proportion <- proportion %>% pivot_longer(
+  cols = c("Total_Cells", "IN_Cells"), names_to = "Cells", values_to = "Number"
+)
+# ----------------------------------------------------
+
+ggplot(proportion, aes(fill = Cells, y = Number, x = Sample)) +
+  geom_bar(position = "stack", stat = "identity") +
+  theme_light()
+ggplot(proportion, aes(fill = Cells, y = Number, x = Sample)) +
+  geom_bar(position = "fill", stat = "identity") +
+  ylab("Proportion") +
+  theme_light()
+```
+
+# References
+
+This is the concluding section of the document, where we output the `sessionInfo`, and create a bibliography for works cited.
+
+```{r}
+sessionInfo()
+```
