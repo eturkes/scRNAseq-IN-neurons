@@ -107,7 +107,7 @@ names(metadata_to_plot) <- "seurat_clusters"
 We first read in the data and subset to the sample of interest.
 
 ```{r}
-seurat <- readRDS(file.path(data_dir, "GSM5693472_seurat_unfiltered.rds"))
+seurat <- readRDS(file.path(data_dir, "GSM5693472_seurat_filtered_analyzed.rds"))
 
 seurat <- seurat[ , which(seurat$sample == sample_name)] # WT sample.
 ```

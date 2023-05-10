@@ -126,14 +126,14 @@ Plotting the expression of various IN neuron markers.
 # Subset to IN neurons.
 # ---------------------
 sub_files <- vector("list", length = length(file_list))
-sub_files[[1]] <- subset(files[[1]], idents = c("9", "8", "6"))
-sub_files[[2]] <- subset(files[[2]], idents = c("17", "19", "13", "3", "6"))
-sub_files[[3]] <- subset(files[[3]], idents = c("8", "9", "1", "15", "17", "16", "7", "2", "11"))
-sub_files[[4]] <- subset(files[[4]], idents = c("5", "4", "14", "1", "8", "9", "7", "17"))
-sub_files[[5]] <- subset(files[[5]], idents = c("4", "10", "8", "11", "1", "5"))
-sub_files[[6]] <- subset(files[[6]], idents = c("4", "0", "16", "13"))
-sub_files[[7]] <- subset(files[[7]], idents = c("5", "0"))
-sub_files[[8]] <- subset(files[[8]], idents = c("18", "2", "13", "20", "0", "11", "6"))
+sub_files[[1]] <- subset(files[[1]], idents = c("6", "5", "7"))
+sub_files[[2]] <- subset(files[[2]], idents = c("3", "12", "15", "16"))
+sub_files[[3]] <- subset(files[[3]], idents = c("10", "12", "4", "6", "7", "3"))
+sub_files[[4]] <- subset(files[[4]], idents = c("3", "2", "6", "5"))
+sub_files[[5]] <- subset(files[[5]], idents = c("1", "3", "9", "6"))
+sub_files[[6]] <- subset(files[[6]], idents = c("9", "13", "10", "2", "12", "15"))
+sub_files[[7]] <- subset(files[[7]], idents = c("3", "1"))
+sub_files[[8]] <- subset(files[[8]], idents = c("5", "0", "8", "9", "1"))
 # ---------------------
 
 for (i in seq_along(file_list)) {
@@ -195,7 +195,7 @@ Plotting the expression of various IN neuron markers.
 # Subset to IN neurons.
 # ---------------------
 pvalb <- vector("list", length = 1)
-pvalb[[1]] <- subset(files[[2]], idents = "13")
+pvalb[[1]] <- subset(files[[2]], idents = c("3", "12"))
 # ---------------------
 
 for (i in seq_along(pvalb)) {
@@ -215,7 +215,7 @@ Results showing the percentage of IN neurons in each sample.
 # Make a table summarising the proportion of IN neurons per sample.
 # -----------------------------------------------------------------
 proportion <- data.frame(
-  "Other_Cells" = c(ncol(files[[2]]), ncol(sub_files[[2]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
+  "Other_Cells" = c(ncol(files[[1]]), ncol(sub_files[[1]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
 )
 proportion$IN_Percentage <- round((proportion$Pvalb_Cells / proportion$Other_Cells) * 100)
 rownames(proportion) <- c("Out_of_All_Cells", "Out_of_IN_Cells")
@@ -240,7 +240,7 @@ ggplot(proportion, aes(fill = Cells, y = Number, x = Comparison)) +
   theme_light()
 ```
 
-## D-5
+## D-3
 
 ### UMAP Expression Plots with Pvalb Neurons Only
 
@@ -250,14 +250,14 @@ Plotting the expression of various IN neuron markers.
 # Subset to IN neurons.
 # ---------------------
 pvalb <- vector("list", length = 1)
-pvalb[[1]] <- subset(files[[5]], idents = "11")
+pvalb[[1]] <- subset(files[[3]], idents = "3")
 # ---------------------
 
 for (i in seq_along(pvalb)) {
   print(
     FeaturePlot(
       pvalb[[i]], features = c("Gad1", "Gad2", "Pvalb", "Sst"), order = TRUE, cols = c("lightgrey", "red")
-    ) + plot_annotation("D-5", theme = theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold")))
+    ) + plot_annotation("D-3", theme = theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold")))
   )
 }
 ```
@@ -270,7 +270,7 @@ Results showing the percentage of IN neurons in each sample.
 # Make a table summarising the proportion of IN neurons per sample.
 # -----------------------------------------------------------------
 proportion <- data.frame(
-  "Other_Cells" = c(ncol(files[[5]]), ncol(sub_files[[5]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
+  "Other_Cells" = c(ncol(files[[1]]), ncol(sub_files[[1]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
 )
 proportion$IN_Percentage <- round((proportion$Pvalb_Cells / proportion$Other_Cells) * 100)
 rownames(proportion) <- c("Out_of_All_Cells", "Out_of_IN_Cells")
@@ -305,7 +305,7 @@ Plotting the expression of various IN neuron markers.
 # Subset to IN neurons.
 # ---------------------
 pvalb <- vector("list", length = 1)
-pvalb[[1]] <- subset(files[[6]], idents = "13")
+pvalb[[1]] <- subset(files[[6]], idents = c("10", "2"))
 # ---------------------
 
 for (i in seq_along(pvalb)) {
@@ -325,7 +325,7 @@ Results showing the percentage of IN neurons in each sample.
 # Make a table summarising the proportion of IN neurons per sample.
 # -----------------------------------------------------------------
 proportion <- data.frame(
-  "Other_Cells" = c(ncol(files[[6]]), ncol(sub_files[[6]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
+  "Other_Cells" = c(ncol(files[[1]]), ncol(sub_files[[1]])), "Pvalb_Cells" = rep(ncol(pvalb[[1]]), times = 2)
 )
 proportion$IN_Percentage <- round((proportion$Pvalb_Cells / proportion$Other_Cells) * 100)
 rownames(proportion) <- c("Out_of_All_Cells", "Out_of_IN_Cells")
