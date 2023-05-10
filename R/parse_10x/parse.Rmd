@@ -97,8 +97,9 @@ parallel_override <- 0 # See `parallel_plan` in `utils.R`.
 # Metadata to plot after dimensionality reduction and clustering.
 # Values in list can include "no_legend and/or "no_label" to exclude those.
 # -------------------------------------------------------------------------
-metadata_to_plot <- vector("list", length = 1)
-names(metadata_to_plot) <- "seurat_clusters"
+metadata_to_plot <- vector("list", length = 2)
+names(metadata_to_plot) <- c("seurat_clusters", "sample")
+metadata_to_plot$sample <- "no_label"
 # -------------------------------------------------------------------------
 ```
 
@@ -115,7 +116,7 @@ colnames(data) <- meta$bc_wells
 rownames(data) <- genes$gene_name
 
 sce <- SingleCellExperiment(list(counts = data))
-rm(data, meta, genes)
+rm(data, genes)
 
 batch <- NULL # Specify if there are batches for QC sections.
 
@@ -223,6 +224,8 @@ rowData(sce) <- NULL
 sub_name <- "all"
 seurat <- as.Seurat(sce, data = NULL)
 rm(sce)
+meta <- meta[meta$bc_wells %in% colnames(seurat), ]
+seurat$sample <- meta$sample
 seurat <- RenameAssays(seurat, originalexp = "RNA")
 seurat <- cluster_pipeline(
   seurat, cache_dir = cache_dir, sub_name = sub_name, protocol = protocol,
